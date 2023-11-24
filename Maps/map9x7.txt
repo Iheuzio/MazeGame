@@ -1,0 +1,3 @@
+ES,SW,ES,SW
+NS,NE,NW,NS
+NE,EW,W,N
