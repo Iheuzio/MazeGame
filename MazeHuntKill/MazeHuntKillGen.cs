@@ -167,7 +167,7 @@ namespace MazeHuntKill
                     MapVector next = current.Move(direction);
                     _maze[current.Y, current.X] |= direction;
                     _maze[next.Y, next.X] |= GetOppositeDirection(direction);
-                    Walk(next);
+                    Walk(current);
                     return;
                 }
             }

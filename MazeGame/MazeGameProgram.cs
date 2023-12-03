@@ -336,11 +336,6 @@ namespace MazeGame
                     validWidth = false;
 
                 }
-                else if (width > 16)
-                {
-                    MessageBox.Show("Width must be less than 16.");
-                    validWidth = false;
-                }
             }
             while (!validHeight)
             {
@@ -360,11 +355,7 @@ namespace MazeGame
                     MessageBox.Show("Height must be at least 5.");
                     validHeight = false;
                 }
-                else if (height > 16)
-                {
-                    MessageBox.Show("Height must be less than 16.");
-                    validHeight = false;
-                }
+               
             }
 
             if (widthInput == "" || heightInput == "")
