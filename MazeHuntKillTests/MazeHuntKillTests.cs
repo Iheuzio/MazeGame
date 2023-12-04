@@ -9,7 +9,7 @@ public class MazeRecursionTests
     public void TestCreateMap()
     {
         // provider to test
-        HuntKillMazeGen mazeGen = new HuntKillMazeGen();
+        var mazeGen = new ImprovedMazeHuntKillGen();
         int width = 21;
         int height = 19;
         Map map = new Map(mazeGen);
