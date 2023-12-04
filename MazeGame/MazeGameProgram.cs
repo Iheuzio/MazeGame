@@ -304,7 +304,7 @@ namespace MazeGame
                     _logger.Info("Maze loaded from recursive algorithm.");
                     break;
                 case "HuntKill":
-                    mazeProvider = new MazeHuntKill.HuntKillMazeGen();
+                    mazeProvider = new MazeHuntKill.ImprovedMazeHuntKillGen();
                     _logger.Info("Maze loaded from hunt and kill algorithm.");
                     break;
             }

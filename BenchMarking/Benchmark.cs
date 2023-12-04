@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Maze
 {
-    class Program
+    class Benchmark
     {
         static void Main(string[] args)
         {
@@ -29,7 +29,10 @@ namespace Maze
         {
             // Create an instance of each IMapProvider algorithm
             IMapProvider recursiveMazeProvider = new RecursiveMazeGen();
-            IMapProvider huntKillMazeProvider = new HuntKillMazeGen();
+            IMapProvider huntKillMazeProvider = new ImprovedMazeHuntKillGen();
+            
+            // initial hunt and kill:
+            // IMapProvider huntKillMazeProvider = new HuntKillMazeGen();
 
             Console.WriteLine($"Running benchmarks for maze size {size}...");
 #if DEBUG
@@ -51,10 +54,10 @@ namespace Maze
             Console.WriteLine("");
 
             // Run benchmarks for CreateMap
-            TimeAndLog(mapProvider, () => mapProvider.CreateMap(width, height), $"{deployment}-{algorithmName}", logFilePath, csvFilePath, width, height);
+            TimeAndLog(() => mapProvider.CreateMap(width, height), $"{deployment}-{algorithmName}", logFilePath, csvFilePath, width, height);
         }
 
-        static void TimeAndLog(IMapProvider mapProvider, Action action, string testName, string logFilePath, string csvFilePath, int width, int height)
+        static void TimeAndLog(Action action, string testName, string logFilePath, string csvFilePath, int width, int height)
         {
             TimeSpan elapsedTime = TimeIt(action);
 
