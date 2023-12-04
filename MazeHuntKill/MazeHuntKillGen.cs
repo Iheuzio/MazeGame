@@ -1,4 +1,5 @@
 ﻿using Maze;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace MazeHuntKill
@@ -44,10 +45,9 @@ namespace MazeHuntKill
 
             while (unvisitedCells.Count > 0)
             {
-                // Randomly select an unvisited cell for hunting
-                int randomIndex = _random.Next(unvisitedCells.Count);
-                MapVector startCell = unvisitedCells[randomIndex];
-                unvisitedCells.RemoveAt(randomIndex);
+                // Select the last unvisited cell for hunting
+                MapVector startCell = unvisitedCells[unvisitedCells.Count - 1];
+                unvisitedCells.RemoveAt(unvisitedCells.Count - 1);
 
                 Walk(startCell, unvisitedCells);
             }
