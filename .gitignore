@@ -365,3 +365,6 @@ FodyWeavers.xsd
 /coveragereport
 /maze_coverage.xml
 /recursion_coverage.xml
+
+# Python stuff
+.venv
