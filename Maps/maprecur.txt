@@ -1,0 +1,9 @@
+S,E S,W,E S,E W,S W,E S,E W,E S W,W
+N S,N E,E W,N E W,S W,N E,N E W,W,N E,S W
+N S,E S,S W,E,N E S W,E W,W,E S,E W,N S W
+N E,N W,N E,S W,N S,E S,E W,N W,E,N S W
+E S,E W,E W,N W,N,N S,E S,E W,S W,N S
+N S,E S,E W,E W,S W,N E,N E W,S W,N S,N
+N S,N S,E S,S W,N E,E W,S W,N,N E,S W
+N S,N S,N S,N E,E W,W,N S,E S,E W,N S W
+N E,N W,N E,E W,E W,E W,N E W,N W,E,N W

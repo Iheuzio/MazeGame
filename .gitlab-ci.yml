@@ -1,0 +1,58 @@
+stages:
+  - Test
+  - Deploy
+
+image: mcr.microsoft.com/dotnet/sdk:6.0
+
+Test:
+  stage: Test
+  script:
+    - cd MazeTests
+    - dotnet add package JUnitTestLogger --version 1.1.0
+    - dotnet test --logger "junit;LogFilePath=../TestResults/MazeTests.xml" --test-adapter-path:. /p:EnableWindowsTargeting=true
+    - cd ../MazeRecursionTests
+    - dotnet add package JUnitTestLogger --version 1.1.0
+    - dotnet test --logger "junit;LogFilePath=../TestResults/MazeRecursionTests.xml" --test-adapter-path:. /p:EnableWindowsTargeting=true
+    - cd ../MazeHuntKillTests
+    - dotnet add package JUnitTestLogger --version 1.1.0
+    - dotnet test --logger "junit;LogFilePath=../TestResults/MazeHuntKillTests.xml" --test-adapter-path:. /p:EnableWindowsTargeting=true
+  artifacts:
+    paths:
+      - ./TestResults/*Tests.xml
+    reports:
+        junit:
+            - ./TestResults/*Tests.xml
+    expire_in: 1 week
+  only:
+    - merge_requests
+
+Deploy:
+  stage: Deploy
+  script:
+      - apt-get update -y
+      - apt-get install -y gnupg
+      - echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | debconf-set-selections
+      - apt install -y software-properties-common
+      - apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 3B4FE6ACC0B21F32
+      - apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 871920D1991BC93C
+      - add-apt-repository "deb http://archive.ubuntu.com/ubuntu focal universe"
+      - add-apt-repository "deb http://archive.ubuntu.com/ubuntu focal main universe restricted multiverse"
+      - apt update -y
+      - apt install -y ttf-mscorefonts-installer
+      - apt-get install -y fontconfig 
+      - fc-cache -f
+      - fc-match Arial
+      - apt-get install -y zip
+      - cd MazeGame
+      - dotnet publish -c Release -r win-x64 --output ./publish /p:EnableWindowsTargeting=true
+      - cp -r ../nlog.config.xml ./publish
+      - zip -r MazeGame.zip ./publish
+  artifacts:
+    paths:
+      - MazeGame/MazeGame.zip
+    expire_in: 2 weeks
+  variables:
+    EnableDocker: "false"
+    EnableWindowsTargeting: "true"
+  only:
+    - merge_requests

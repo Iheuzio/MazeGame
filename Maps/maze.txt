@@ -1,0 +1,12 @@
+SE, SE, S, WS, WES, W
+SE, SE, S, WS, WES, W
+N, SN, SN, SN, EE, WN, W
+N, SN, SN, SN, EE, WN, W
+N, SNN, EE, WE, WS, W
+N, SNN, EE, WE, WS, W
+N, EE, WE, WE, WE, WN, S, W
+N, EE, WE, WE, WE, WN, S, W
+E, SE, WS, WE, SE, WN, W
+E, SE, WS, WE, SE, WN, W
+N, EWN, EN, E, WE, WW
+N, EWN, EN, E, WE, WW
