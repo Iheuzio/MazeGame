@@ -40,7 +40,7 @@ namespace MazeGame
         private float _playerRotation = 0.0f;
         private MapVector _previousPlayerPosition;
         private bool _mazeCreated = false;
-
+        private int scaleMaze = 32;
         private bool _activated = false;
 
         private enum MenuState
@@ -61,6 +61,11 @@ namespace MazeGame
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            // occupy the entire screen using values not fullscreen (calculate the size of the screen)
+            _graphics.PreferredBackBufferWidth = Screen.PrimaryScreen.Bounds.Width;
+            _graphics.PreferredBackBufferHeight = Screen.PrimaryScreen.Bounds.Height;
+            _graphics.ApplyChanges();
 
             InitializeLogging(); // Initialize the logger
         }
@@ -271,7 +276,7 @@ namespace MazeGame
                 IMapProvider mazeProvider = new MazeFromFile.MazeFromFile(selectedMapFilePath);
                 _maze = new Map(mazeProvider);
                 _maze.CreateMap();
-
+               
 
                 _mazeStructure = _maze.MapGrid.Clone() as Block[,];
                 _goalPosition = new Vector2(_maze.Goal.X, _maze.Goal.Y);
@@ -371,7 +376,7 @@ namespace MazeGame
 
             _mazeStructure = _maze.MapGrid.Clone() as Block[,];
             _goalPosition = new Vector2(_maze.Goal.X, _maze.Goal.Y);
-
+            
             // Create the complete maze texture here
             CreateCompleteMazeTexture(_mazeStructure, _goalPosition);
             _mazeCreated = true;
@@ -491,7 +496,7 @@ namespace MazeGame
             {
                 for (int x = 0; x < maze.Width; x++)
                 {
-                    Rectangle destinationRect = new Rectangle(x * 32, y * 32, 32, 32);
+                    Rectangle destinationRect = new Rectangle(x * scaleMaze, y * scaleMaze, scaleMaze, scaleMaze);
 
                     if (x == maze.Player.Position.X && y == maze.Player.Position.Y)
                     {
@@ -500,7 +505,8 @@ namespace MazeGame
                         Vector2 position = new Vector2(destinationRect.X + destinationRect.Width / 2, destinationRect.Y + destinationRect.Height / 2);
 
                         _logger.Info($"Drawing player at:|\tX: |{x}| Y: |{y}|\t |");
-                        _spriteBatch.Draw(_playerTexture, position, null, Color.White, rotation, origin, 1.0f, SpriteEffects.None, 0);
+                        float playerScale = (float)scaleMaze / (float)_playerTexture.Width;
+                        _spriteBatch.Draw(_playerTexture, position, null, Color.White, rotation, origin, playerScale, SpriteEffects.None, 0);
                     }
                     else if (_mazeStructure[x, y] == Block.Empty && new Vector2(x, y) != _goalPosition)
                     {
@@ -516,8 +522,25 @@ namespace MazeGame
         /// </summary>
         /// <param name="mazeStructure">The maze structure to use.</param>
         /// <param name="goalPosition">The position of the goal.</param>
+        /// Creates the complete maze texture.
+        /// </summary>
+        /// <param name="mazeStructure">The maze structure to use.</param>
+        /// <param name="goalPosition">The position of the goal.</param>
         private void CreateCompleteMazeTexture(Block[,] mazeStructure, Vector2 goalPosition)
         {
+
+            // scaleMaze based on the size of the monitor for maximum coverage of placement for the objects: 32 works when the monitor is 1920x1080 at 67x33 mazes. Scale it like that
+            // Get the screen width and height
+            int screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+
+            // Calculate the scale factors for width and height
+            double widthScaleFactor = (double)screenWidth / mazeStructure.GetLength(0);
+            double heightScaleFactor = (double)screenHeight / mazeStructure.GetLength(1);
+
+            // Use the smaller of the two scale factors to maintain aspect ratio
+            scaleMaze = (int)Math.Ceiling(Math.Min(widthScaleFactor, heightScaleFactor));
+
             if (mazeStructure == null)
             {
                 _logger.Warn("Maze structure is null, cannot create complete maze texture.");
@@ -527,7 +550,7 @@ namespace MazeGame
             int mazeHeight = mazeStructure.GetLength(1);
 
             // Create a RenderTarget to draw the complete maze
-            RenderTarget2D mazeRenderTarget = new RenderTarget2D(GraphicsDevice, mazeWidth * 32, mazeHeight * 32);
+            RenderTarget2D mazeRenderTarget = new RenderTarget2D(GraphicsDevice, mazeWidth * scaleMaze, mazeHeight * scaleMaze);
 
             GraphicsDevice.SetRenderTarget(mazeRenderTarget);
             GraphicsDevice.Clear(Color.Transparent);
@@ -539,7 +562,7 @@ namespace MazeGame
             {
                 for (int x = 0; x < mazeWidth; x++)
                 {
-                    Rectangle destinationRect = new Rectangle(x * 32, y * 32, 32, 32);
+                    Rectangle destinationRect = new Rectangle(x * scaleMaze, y * scaleMaze, scaleMaze, scaleMaze);
 
                     if (x == (int)goalPosition.X && y == (int)goalPosition.Y)
                     {
