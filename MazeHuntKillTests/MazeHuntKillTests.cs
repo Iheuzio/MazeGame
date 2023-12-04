@@ -79,7 +79,8 @@ public class MazeRecursionTests
         HuntKillMazeGen mazeGen = new HuntKillMazeGen(1);
         Direction[,] maze1 = mazeGen.CreateMap(7, 5);
 
-        Direction[,] maze2 = mazeGen.CreateMap(7, 5);
+        HuntKillMazeGen mazeGen1 = new HuntKillMazeGen(2);
+        Direction[,] maze2 = mazeGen1.CreateMap(7, 5);
 
         bool areDifferent = false;
 

@@ -1,8 +1,6 @@
 ﻿using MazeHuntKill;
 using MazeRecursion;
-using System;
 using System.Diagnostics;
-using System.IO;
 
 namespace Maze
 {
@@ -13,15 +11,6 @@ namespace Maze
             // Specify the file paths for logging results
             string logFilePath = "benchmark_log.txt";
             string csvFilePath = "benchmark_results.csv";
-            // delete the files if they already exist
-            if (File.Exists(logFilePath))
-            {
-                File.Delete(logFilePath);
-            }
-            if (File.Exists(csvFilePath))
-            {
-                File.Delete(csvFilePath);
-            }
 
             // Run benchmarks for different maze sizes (odd numbers starting from 5x5 up to 1000x1000)
             for (int size = 5; size <= 255; size += 2)
