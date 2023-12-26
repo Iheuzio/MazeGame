@@ -1,6 +1,7 @@
 # MazeGame
 
-This is a c# project that serves to demonstrate the use of recursion, hunt and kill and overall generating a maze. However, it also serves to showcase a game built in C#, allowing for a player to interact with MonoGame to reach a goal. 
+This is a c# project that serves to demonstrate the use of recursion, hunt and kill and overall generating a maze. However, it also serves to showcase a game built in C#, allowing for a player to interact with MonoGame to reach a goal. This serves as the 5th part of the project, the final step for 510's Simulations course.
+
 **Only odd mazes may be created**
 
 # Installing application
