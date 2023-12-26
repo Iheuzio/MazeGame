@@ -12,11 +12,11 @@ Ensure that you have all the dependencies and projects required to run the proje
 To run the app, build the project
 ```
 cd MazeGame
-dotnet run build MazeGame;
+dotnet build;
 ```
 Then run the project
 ```
-dotnet run MazeGame
+dotnet run --project MazeGame;
 ```
 Or view the binary uploaded in the release, extract to your preferred folder and run the MazeGame.exe located inside the folder.
 
